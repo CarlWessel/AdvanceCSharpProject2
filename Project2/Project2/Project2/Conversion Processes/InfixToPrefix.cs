@@ -27,7 +27,7 @@ namespace Project2.Conversion_Processes
                 }
             }
 
-            string postfix = InfixToPostfix.convertToPostfix(new string(arr));
+            string postfix = InfixToPostfix.convertToPostfix(new string(arr), true);
             char[] postArr = postfix.ToCharArray();
             Array.Reverse(postArr);
             return new string(postArr);

@@ -9,7 +9,7 @@ namespace Project2.Conversion_Processes
     public class InfixToPostfix
     {
         //Convert infix expression to postfix notation
-        public static string convertToPostfix(string s)
+        public static string convertToPostfix(string s, bool pre = false)
         {
             Stack<char> st = new Stack<char>();
             string res = "";
@@ -35,11 +35,22 @@ namespace Project2.Conversion_Processes
                 }
                 else
                 {
-                    while (st.Count > 0 && Operators.operatorPrecedence(s[i]) <= Operators.operatorPrecedence(st.Peek()))
+                    if(pre)
                     {
-                        res += st.Pop();
+                        while (st.Count > 0 && Operators.operatorPrecedence(s[i]) < Operators.operatorPrecedence(st.Peek()))
+                        {
+                            res += st.Pop();
+                        }
+                        st.Push(s[i]);
                     }
-                    st.Push(s[i]);
+                    else
+                    {
+                        while (st.Count > 0 && Operators.operatorPrecedence(s[i]) <= Operators.operatorPrecedence(st.Peek()))
+                        {
+                            res += st.Pop();
+                        }
+                        st.Push(s[i]);
+                    }
                 }
             }
 
