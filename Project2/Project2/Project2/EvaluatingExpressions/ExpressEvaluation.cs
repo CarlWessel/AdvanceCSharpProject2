@@ -14,19 +14,11 @@ namespace Project2.EvaluatingExpressions
 
             while (i < expr.Length)
             {
-                if (char.IsDigit(expr[i]))
+                if (char.IsDigit(expr[i]) || Operators.isOperator(expr[i]))
                 {
-                    string num = "";
-                    while (i < expr.Length && char.IsDigit(expr[i]))
-                    {
-                        num += expr[i++];
-                    }
-                    tokens.Add(num);
+                    tokens.Add(expr[i].ToString());
                 }
-                else if (Operators.isOperator(expr[i]))
-                {
-                    tokens.Add(expr[i++].ToString());
-                }
+                i++;
             }
 
             return tokens;
