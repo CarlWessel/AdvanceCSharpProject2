@@ -1,35 +1,63 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 
 namespace Project2
 {
-    public class CSVFile
+    public class CSVData
     {
-        public static List<string> CSVDeserialize(string fileName)
+        public int sno { get; set; }
+        public string infix { get; set; }
+    }
+
+    public static class CSVFile
+    {
+        public static List<CSVData> CSVDeserialize(string fileName)
         {
-            var dataList = new List<string>();
+            var dataList = new List<CSVData>();
+            string filePath = Path.Combine("Data", fileName);
 
-            using (var reader = new StreamReader(Path.Combine("data", fileName)))
+            if (!File.Exists(filePath))
             {
-                var headers = reader.ReadLine();
-                if (headers == null) throw new Exception("CSV file is empty or has no headers.");
+                throw new FileNotFoundException($"CSV file not found at: {Path.GetFullPath(filePath)}");
+            }
 
-                string? line;
-                while ((line = reader.ReadLine()) != null)
+            var lines = File.ReadAllLines(filePath);
+
+            // Skip header row
+            foreach (var line in lines.Skip(1))
+            {
+                if (string.IsNullOrWhiteSpace(line)) continue;
+
+                // Handle both tab and comma separated files
+                var separator = line.Contains('\t') ? '\t' : ',';
+                var values = line.Split(separator);
+
+                if (values.Length >= 2)
                 {
-                    var values = line.Split(',');
-                    // Skip the first value, which is sno column
-                    for (int i = 1; i < values.Length; i++)
+                    string infixExpr = values[1].Trim();
+
+                    // Convert date-formatted expressions (like "03-Apr" to "4-3")
+                    if (infixExpr.Contains("-") && !infixExpr.Any(c => "+*/()".Contains(c)))
                     {
-                        dataList.Add(values[i].Trim());
+                        try
+                        {
+                            DateTime dt = DateTime.ParseExact(infixExpr, "dd-MMM", CultureInfo.InvariantCulture);
+                            infixExpr = $"{dt.Month}-{dt.Day}";
+                        }
+                        catch
+                        {
+                            // If parsing fails, leave as is
+                            // NOTE: Basically "fuck it, we ball"... pls fix this I'm getting a System.FormatException
+                        }
                     }
 
-                    //With sno column
-                    //foreach (var value in values)
-                    //{
-                    //    dataList.Add(value.Trim());
-                    //}
+                    dataList.Add(new CSVData
+                    {
+                        sno = int.Parse(values[0].Trim()),
+                        infix = infixExpr
+                    });
                 }
             }
 
