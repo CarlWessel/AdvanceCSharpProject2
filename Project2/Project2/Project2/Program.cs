@@ -1,5 +1,6 @@
 ﻿using Project2.Conversion_Processes;
 using Project2.EvaluatingExpressions;
+using Project2.CSVFile;
 using System.Linq.Expressions;
 
 namespace Project2
@@ -15,7 +16,7 @@ namespace Project2
             {
                 // Step 1: Deserialize CSV input
                 Console.WriteLine("\nStep 1: Reading and parsing CSV file...");
-                var csvData = CSVFile.CSVDeserialize("Project 2_INFO_5101.csv");
+                var csvData = CSVFile.CSVFile.CSVDeserialize("Project 2_INFO_5101.csv");
                 Console.WriteLine($"Found {csvData.Count} expressions in CSV file.");
 
                 // Initialize lists for storage
@@ -80,7 +81,7 @@ namespace Project2
                     writer.WriteStartDocument();
                     writer.WriteStartRootElement();
 
-                    for (int i = 0; i < csvData.Count; i++)
+                    for (int i = 0; i < csvData.Count(); i++)
                     {
                         writer.WriteStartElement("elements");
 
@@ -105,7 +106,7 @@ namespace Project2
                 Console.WriteLine("| SNO |   Infix Expression  | Postfix Notation | Prefix Notation | Prefix Result | Postfix Result | Match |");
                 Console.WriteLine("===========================================================================================================");
 
-                for (int i = 0; i < csvData.Count; i++)
+                for (int i = 0; i < csvData.Count(); i++)
                 {
                     // NOTE: TEMPORARY DIRTY FIX BELOW, DO NOT KEEP IN PROGRAM.CS UNLESS NO OTHER SOLUTIONS ARE FOUND
                     string prefixResultStr = prefixResults[i] % 1 == 0 ?
