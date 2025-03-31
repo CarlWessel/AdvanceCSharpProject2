@@ -43,13 +43,17 @@ namespace Project2
                     {
                         try
                         {
-                            DateTime dt = DateTime.ParseExact(infixExpr, "dd-MMM", CultureInfo.InvariantCulture);
-                            infixExpr = $"{dt.Month}-{dt.Day}";
+                            if (DateTime.TryParseExact(infixExpr, new[] { "dd-MMM", "yyyy-MM-dd" },
+                                CultureInfo.InvariantCulture,
+                                DateTimeStyles.None,
+                                out DateTime dt))
+                            {
+                                infixExpr = $"{dt.Month}-{dt.Day}";
+                            }
                         }
                         catch
                         {
-                            // If parsing fails, leave as is
-                            // NOTE: Basically "fuck it, we ball"... pls fix this I'm getting a System.FormatException
+                            Console.WriteLine($"Invalid date format: {infixExpr}");
                         }
                     }
 
