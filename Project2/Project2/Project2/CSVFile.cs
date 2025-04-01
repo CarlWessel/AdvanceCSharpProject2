@@ -1,15 +1,20 @@
-﻿using System;
+﻿// Carl Wessel, Cody Sykes, Trishia Salamangkit
+using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Project2.CSVFile
+namespace Project2
 {
     public static class CSVFile
     {
-        public static List<CSVData> CSVDeserialize(string fileName)
+
+        public static List<(int sno, string infix)> CSVDeserialize(string fileName)
         {
-            var dataList = new List<CSVData>();
+            // De-serialize CSV input to C# List named InFix (CSVFile class)
+            var InFix = new List<(int sno, string infix)>();
             string filePath = Path.Combine("Data", fileName);
 
             if (!File.Exists(filePath))
@@ -24,7 +29,6 @@ namespace Project2.CSVFile
             {
                 if (string.IsNullOrWhiteSpace(line)) continue;
 
-                // Handle both tab and comma separated files
                 var separator = line.Contains('\t') ? '\t' : ',';
                 var values = line.Split(separator);
 
@@ -32,7 +36,6 @@ namespace Project2.CSVFile
                 {
                     string infixExpr = values[1].Trim();
 
-                    // Convert date-formatted expressions (like "03-Apr" to "4-3")
                     if (infixExpr.Contains("-") && !infixExpr.Any(c => "+*/()".Contains(c)))
                     {
                         try
@@ -51,15 +54,11 @@ namespace Project2.CSVFile
                         }
                     }
 
-                    dataList.Add(new CSVData
-                    {
-                        sno = int.Parse(values[0].Trim()),
-                        infix = infixExpr
-                    });
+                    InFix.Add((int.Parse(values[0].Trim()), infixExpr));
                 }
             }
 
-            return dataList;
+            return InFix;
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Project2.Conversion_Processes;
+﻿// Carl Wessel, Cody Sykes, Trishia Salamangkit
+using Project2.Conversion_Processes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,6 @@ using System.Threading.Tasks;
 /*
  This class is used to create a node to traverse through the expression tree
  */
-
 
 namespace Project2.EvaluatingExpressions
 {

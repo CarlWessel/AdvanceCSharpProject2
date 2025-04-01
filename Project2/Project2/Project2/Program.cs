@@ -1,6 +1,6 @@
-﻿using Project2.Conversion_Processes;
+﻿// Carl Wessel, Cody Sykes, Trishia Salamangkit
+using Project2.Conversion_Processes;
 using Project2.EvaluatingExpressions;
-using Project2.CSVFile;
 using System.Linq.Expressions;
 
 namespace Project2
@@ -10,13 +10,13 @@ namespace Project2
         static void Main(string[] args)
         {
             Console.WriteLine("Infix to Prefix/Postfix Converter and Evaluator | Carl Wessel, Cody Sykes, Trishia Salamangkit");
-            Console.WriteLine("================================================");
+            Console.WriteLine("==============================================================================================");
 
             try
             {
                 // Step 1: Deserialize CSV input
                 Console.WriteLine("\nStep 1: Reading and parsing CSV file...");
-                var csvData = CSVFile.CSVFile.CSVDeserialize("Project 2_INFO_5101.csv");
+                var csvData = CSVFile.CSVDeserialize("Project 2_INFO_5101.csv");
                 Console.WriteLine($"Found {csvData.Count} expressions in CSV file.");
 
                 // Initialize lists for storage
@@ -48,7 +48,7 @@ namespace Project2
                 Console.WriteLine("\nStep 4: Evaluating Prefix expressions...");
                 foreach (var prefix in prefixList)
                 {
-                    double result = ExpressEvaluation.EvaluatePrefix(prefix);
+                    double result = ExpressionEvaluation.EvaluatePrefix(prefix);
                     prefixResults.Add(result);
                     Console.WriteLine($"Prefix: {prefix} => Result: {result}");
                 }
@@ -57,7 +57,7 @@ namespace Project2
                 Console.WriteLine("\nStep 5: Evaluating Postfix expressions...");
                 foreach (var postfix in postfixList)
                 {
-                    double result = ExpressEvaluation.EvaluatePostfix(postfix);
+                    double result = ExpressionEvaluation.EvaluatePostfix(postfix);
                     postfixResults.Add(result);
                     Console.WriteLine($"Postfix: {postfix} => Result: {result}");
                 }
@@ -108,13 +108,11 @@ namespace Project2
 
                 for (int i = 0; i < csvData.Count(); i++)
                 {
-                    // NOTE: TEMPORARY DIRTY FIX BELOW, DO NOT KEEP IN PROGRAM.CS UNLESS NO OTHER SOLUTIONS ARE FOUND
                     string prefixResultStr = prefixResults[i] % 1 == 0 ?
                         prefixResults[i].ToString("0") : prefixResults[i].ToString("0.00");
                     string postfixResultStr = postfixResults[i] % 1 == 0 ?
                         postfixResults[i].ToString("0") : postfixResults[i].ToString("0.00");
 
-                    // NOTE: Actual printing sequence
                     Console.WriteLine($"| {csvData[i].sno,3} | {csvData[i].infix,-19} | {postfixList[i],-16} | {prefixList[i],-15} | " +
                         $"{prefixResultStr,12} | {postfixResultStr,14} | {comparisonResults[i],6} |");
                 }

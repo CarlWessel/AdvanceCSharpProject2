@@ -1,10 +1,11 @@
-﻿using Project2.Conversion_Processes;
+﻿// Carl Wessel, Cody Sykes, Trishia Salamangkit
+using Project2.Conversion_Processes;
 using System;
 using System.Collections.Generic;
 
 namespace Project2.EvaluatingExpressions
 {
-    public class ExpressEvaluation
+    public class ExpressionEvaluation
     {
         //Tokenize expressions
         private static List<string> TokenizeExpression(string expr)
